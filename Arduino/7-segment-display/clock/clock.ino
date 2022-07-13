@@ -85,9 +85,21 @@ void writeDigit(char flag)
 
 void displayTime(unsigned int hour, unsigned int minute)
 {
-	(void)minute;
 	selectDigit(0);
-	writeDigit(digits[hour]);
+	writeDigit(digits[hour / 10]);
+	delay(1);
+
+	selectDigit(1);
+	writeDigit(digits[hour % 10]);
+	delay(1);
+
+	selectDigit(2);
+	writeDigit(digits[minute / 10]);
+	delay(1);
+
+	selectDigit(3);
+	writeDigit(digits[minute % 10]);
+	delay(1);
 }
 
 // @brief change the time by relative value
@@ -105,10 +117,8 @@ void changeTime(int dHour, int dMinute)
 	rtc.adjust(DateTime(2000, 8, 30, hour, minute, now.second()));
 }
 
-int i = 0;
 void loop()
 {
-	displayTime(i, 0);
-	i = ++i % 10;
-	delay(1000);
+	DateTime now = rtc.now();
+	displayTime(now.hour(), now.minute());
 }
