@@ -1,3 +1,12 @@
+/*
+ * IR_LED_Controller
+ * 
+ * Preparations:
+ * Connect 3 LEDs to digital pins 2, 3 and 4
+ * Connect IR_receiver to pin A3
+ * 
+ */
+
 #include <IRremote.hpp>
 
 #define IR_RECIVE_PIN  A3 // pin of ir receiver
