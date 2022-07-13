@@ -1,6 +1,6 @@
 # IR Remote controller
 
-Here you can find different little projects exploring the possibilities of working with the IR Remote controller and receiver. Each directory has it's own project. 
+Here you can find different little projects exploring the possibilities of working with the IR Remote controller and receiver. Each file has different possibilities. 
 
 ## Projects with Arduino and IR Remote controller:
 - IR_remote.ino
