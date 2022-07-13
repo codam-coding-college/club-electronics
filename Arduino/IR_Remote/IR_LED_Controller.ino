@@ -5,6 +5,7 @@
  * Connect 3 LEDs to digital pins 2, 3 and 4
  * Connect IR_receiver to pin A3
  * 
+ * Install IRremote library
  */
 
 #include <IRremote.hpp>
