@@ -1,7 +1,15 @@
 #include <Wire.h>
 #include "RTClib.h"
+#include <IRremote.hpp>
+
+#define IR_RECIVE_PIN A3
+#define HOUR_UP 70
+#define HOUR_DOWN 21
+#define MINUTE_UP 67
+#define MINUTE_DOWN 68
 
 RTC_DS1307 rtc;
+
 int pinA = 2;
 int pinB = 3;
 int pinC = 4;
@@ -30,8 +38,6 @@ char digits[10] = {
 
 void setup()
 {
-	while (!Serial)
-		;
 	pinMode(pinA, OUTPUT);
 	pinMode(pinB, OUTPUT);
 	pinMode(pinC, OUTPUT);
@@ -44,10 +50,11 @@ void setup()
 	pinMode(D3, OUTPUT);
 	pinMode(D4, OUTPUT);
 
-	Serial.begin(115200);
+	IrReceiver.begin(IR_RECIVE_PIN, DISABLE_LED_FEEDBACK);
+
 	if (!rtc.begin())
 	{
-		Serial.println("Couldn't find RTC");
+		// Serial.println("Couldn't find RTC");
 		while (1)
 			;
 	}
@@ -117,8 +124,36 @@ void changeTime(int dHour, int dMinute)
 	rtc.adjust(DateTime(2000, 8, 30, hour, minute, now.second()));
 }
 
+void receiveIR()
+{
+	if (!IrReceiver.decode())
+		return;
+
+	switch (IrReceiver.decodedIRData.command)
+	{
+	case HOUR_DOWN:
+		changeTime(-1, 0);
+		break;
+	case HOUR_UP:
+		changeTime(1, 0);
+		break;
+
+	case MINUTE_UP:
+		changeTime(0, 1);
+		break;
+
+	case MINUTE_DOWN:
+		changeTime(0, -1);
+		break;
+	default:
+		break;
+	}
+	IrReceiver.resume();
+}
+
 void loop()
 {
 	DateTime now = rtc.now();
 	displayTime(now.hour(), now.minute());
+	receiveIR();
 }
